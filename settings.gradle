@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "TrailBlazer"
-include ':app'
+include ':authentication'
