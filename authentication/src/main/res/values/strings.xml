@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">TrailBlazer</string>
+    <string name="emailAddresHint">email</string>
+    <string name="passwordHint">Password</string>
+    <string name="signUp">Sign Up</string>
+    <string name="login">Login</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="repeatPasswordHint">repeat password</string>
 </resources>
