@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginFragment"
+    tools:context=".login.LoginFragment"
     android:orientation="vertical"
     android:gravity="center">
     <EditText
@@ -24,7 +24,7 @@
         android:minHeight="48dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/login_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login" />
@@ -35,17 +35,11 @@
         android:orientation="horizontal"
         android:gravity="center">
         <ImageButton
+            android:id="@+id/google_bnt"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/google_icon"
             android:layout_weight="1"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"/>
-        <ImageButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:scaleType="fitXY"
-            android:background="@drawable/facebook_icon"
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"/>
     </LinearLayout>

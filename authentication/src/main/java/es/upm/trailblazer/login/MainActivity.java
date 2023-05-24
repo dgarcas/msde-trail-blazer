@@ -1,4 +1,4 @@
-package es.upm.trailblazer;
+package es.upm.trailblazer.login;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -6,18 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+
+import es.upm.trailblazer.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
