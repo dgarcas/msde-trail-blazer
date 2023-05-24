@@ -15,33 +15,35 @@ import com.google.firebase.auth.FirebaseAuth;
 public class SignUpManager {
     private FirebaseAuth mAuth;
     private Activity myActivity;
+    private OnCompleteListener<AuthResult> onCompleteListenerRegister;
 
     public SignUpManager(Activity myActivity) {
 
         mAuth = FirebaseAuth.getInstance();
         this.myActivity = myActivity;
+        onCompleteListenerRegister = new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(myActivity, "Registration successful!",
+                            Toast.LENGTH_LONG).show();
+                } else {
+
+                    Toast.makeText(myActivity, "Registration failed!!"
+                            + " Please try again later", Toast.LENGTH_LONG).show();
+                }
+            }
+        };
     }
 
     public void registerNewUser(String email, String password, String repeatedPassword) {
 
         if (areCreadentialsCorrectly(email, password, repeatedPassword)) {
             mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(myActivity, "Registration successful!",
-                                        Toast.LENGTH_LONG).show();
-                            } else {
-
-                                Toast.makeText(myActivity, "Registration failed!!"
-                                        + " Please try again later", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
+                    .addOnCompleteListener(onCompleteListenerRegister);
         }
     }
+
 
     private boolean areCreadentialsCorrectly(String email, String password, String repatedPassword){
 
@@ -61,6 +63,12 @@ public class SignUpManager {
 
         if (TextUtils.isEmpty(repatedPassword)) {
             Toast.makeText(myActivity, "Please enter repeat Password!!", Toast.LENGTH_LONG)
+                    .show();
+            response = false;
+        }
+
+        if(!password.equals(repatedPassword)){
+            Toast.makeText(myActivity, "Passwords must be identical" , Toast.LENGTH_LONG)
                     .show();
             response = false;
         }
