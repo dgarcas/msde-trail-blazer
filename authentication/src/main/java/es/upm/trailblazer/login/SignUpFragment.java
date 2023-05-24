@@ -39,7 +39,7 @@ public class SignUpFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
-        signUpManager = new SignUpManager();
+        signUpManager = new SignUpManager(getActivity());
 
     }
 
@@ -74,7 +74,7 @@ public class SignUpFragment extends Fragment {
         signUpBnt = getActivity().findViewById(R.id.sign_up_button);
         googleBnt = getActivity().findViewById(R.id.google_bnt_sing_up);
 
-        emailEditText = getActivity().findViewById(R.id.editTextTextEmailAddress);
+        emailEditText = getActivity().findViewById(R.id.email_address_sign_up);
         passwordEditText = getActivity().findViewById(R.id.loginPassword);
         repeatedPasswordEditText = getActivity().findViewById(R.id.loginPasswordRepeat);
 

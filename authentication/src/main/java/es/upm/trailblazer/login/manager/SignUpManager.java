@@ -1,7 +1,7 @@
 package es.upm.trailblazer.login.manager;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
 
+import android.app.Activity;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -14,49 +14,56 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class SignUpManager {
     private FirebaseAuth mAuth;
+    private Activity myActivity;
 
-    public SignUpManager() {
+    public SignUpManager(Activity myActivity) {
+
         mAuth = FirebaseAuth.getInstance();
+        this.myActivity = myActivity;
     }
 
     public void registerNewUser(String email, String password, String repeatedPassword) {
 
-        checkEmailAndPassword(email, password, repeatedPassword);
+        if (areCreadentialsCorrectly(email, password, repeatedPassword)) {
+            mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
 
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(myActivity, "Registration successful!",
+                                        Toast.LENGTH_LONG).show();
+                            } else {
 
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Registration successful!",
-                                    Toast.LENGTH_LONG).show();
-                        } else {
-
-                            Toast.makeText(getApplicationContext(), "Registration failed!!"
-                                            + " Please try again later", Toast.LENGTH_LONG).show();
+                                Toast.makeText(myActivity, "Registration failed!!"
+                                        + " Please try again later", Toast.LENGTH_LONG).show();
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 
-    private void checkEmailAndPassword(String email, String password, String repatedPassword){
+    private boolean areCreadentialsCorrectly(String email, String password, String repatedPassword){
+
+        boolean response = true;
+
         if (TextUtils.isEmpty(email)) {
-            Toast.makeText(getApplicationContext(), "Please enter email!!", Toast.LENGTH_LONG)
+            Toast.makeText(myActivity, "Please enter email!!", Toast.LENGTH_LONG)
                     .show();
-            return;
+            response = false;
         }
 
         if (TextUtils.isEmpty(password)) {
-            Toast.makeText(getApplicationContext(), "Please enter password!!", Toast.LENGTH_LONG)
+            Toast.makeText(myActivity, "Please enter password!!", Toast.LENGTH_LONG)
                     .show();
-            return;
+            response = false;;
         }
 
         if (TextUtils.isEmpty(repatedPassword)) {
-            Toast.makeText(getApplicationContext(), "Please enter repeat Password!!", Toast.LENGTH_LONG)
+            Toast.makeText(myActivity, "Please enter repeat Password!!", Toast.LENGTH_LONG)
                     .show();
-            return;
+            response = false;
         }
+        return  response;
     }
 }
