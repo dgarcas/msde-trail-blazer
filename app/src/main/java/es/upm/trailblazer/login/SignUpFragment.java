@@ -13,12 +13,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.example.authenticate.login.GoogleLogin;
+import com.example.authenticate.signup.SignUpManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import es.upm.trailblazer.R;
-import es.upm.trailblazer.login.manager.GoogleLogin;
-import es.upm.trailblazer.login.manager.SignUpManager;
 
 public class SignUpFragment extends Fragment {
 

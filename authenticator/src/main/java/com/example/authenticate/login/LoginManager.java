@@ -1,4 +1,4 @@
-package es.upm.trailblazer.login.manager;
+package com.example.authenticate.login;
 
 import android.app.Activity;
 

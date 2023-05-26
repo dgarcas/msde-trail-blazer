@@ -14,14 +14,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.example.authenticate.login.GoogleLogin;
+import com.example.authenticate.login.UserLogin;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import es.upm.trailblazer.R;
-import es.upm.trailblazer.login.manager.GoogleLogin;
-import es.upm.trailblazer.login.manager.Login;
-import es.upm.trailblazer.login.manager.UserLogin;
 
 public class LoginFragment extends Fragment {
 
