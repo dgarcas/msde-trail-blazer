@@ -22,7 +22,15 @@
           }
         },
         {
-          "client_id": "520049378225-45pkbn1bn6i74glvcohq0ag4ak06n9lq.apps.googleusercontent.com",
+          "client_id": "520049378225-pkqo39v9en6447cfkbgsle1dtuiv01ed.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "es.upm.trailblazer",
+            "certificate_hash": "c2beef37bd997d6ef7dd3f9143c93d8991669151"
+          }
+        },
+        {
+          "client_id": "520049378225-6d3dosts208jvr6dk3k3g9j7e3kd6thd.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

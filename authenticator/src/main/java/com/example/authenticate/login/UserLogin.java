@@ -1,6 +1,7 @@
 package com.example.authenticate.login;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -16,11 +17,13 @@ public class UserLogin extends LoginManager implements Login {
 
     private EditText emailEditText;
     private EditText passwordEditText;
-    public UserLogin(Activity myActivity, EditText emailEditText, EditText passwordEditText) {
+    private Intent intent;
+    public UserLogin(Activity myActivity, EditText emailEditText, EditText passwordEditText, Intent intent) {
         super(myActivity);
 
         this.emailEditText = emailEditText;
         this.passwordEditText = passwordEditText;
+        this.intent = intent;
     }
 
     @Override
@@ -42,7 +45,6 @@ public class UserLogin extends LoginManager implements Login {
                             Log.w(myActivity.toString(), "signInWithEmail:failure", task.getException());
                             Toast.makeText(myActivity, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
                         }
                     }
                 });
@@ -60,6 +62,6 @@ public class UserLogin extends LoginManager implements Login {
     }
     @Override
     public void updateUI(FirebaseUser user) {
-
+        myActivity.startActivity(intent);
     }
 }

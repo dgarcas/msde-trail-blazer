@@ -42,4 +42,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:20.5.0'
     implementation platform('com.google.firebase:firebase-bom:31.5.0')
     implementation project(":authenticator")
+    implementation 'org.osmdroid:osmdroid-android:6.1.16'
+    implementation 'org.osmdroid:osmdroid-mapsforge:6.1.10'
+    implementation 'org.osmdroid:osmdroid-wms:6.1.10'
+    implementation 'org.osmdroid:osmdroid-geopackage:6.1.10'
 }
