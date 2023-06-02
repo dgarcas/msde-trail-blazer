@@ -2,11 +2,11 @@
     <item
         android:id="@+id/page_1"
         android:enabled="true"
-        android:icon="@drawable/gps_fixed"
-        android:title="@string/signUp"/>
+        android:icon="@drawable/route"
+        android:title="@string/track"/>
     <item
         android:id="@+id/page_2"
         android:enabled="true"
-        android:icon="@drawable/google_icon"
-        android:title="@string/passwordHint"/>
+        android:icon="@drawable/search"
+        android:title="@string/find"/>
 </menu>
