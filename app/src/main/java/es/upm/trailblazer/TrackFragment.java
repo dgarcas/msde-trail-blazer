@@ -65,14 +65,14 @@ public class TrackFragment extends Fragment {
         gpsActionButton.setOnClickListener(v -> {
             if(mLocationOverlay.isFollowLocationEnabled()){
                 mLocationOverlay.disableFollowLocation();
-                gpsActionButton.setImageResource(R.drawable.gps_off);
+                gpsActionButton.setImageResource(R.drawable.gps_not_fixed);
             } else {
                 mLocationOverlay.enableFollowLocation();
                 map.getController().setZoom(20);
                 gpsActionButton.setImageResource(R.drawable.gps_fixed);
             }
         });
-        map.setOnTouchListener((v, event) -> {gpsActionButton.setImageResource(R.drawable.gps_off);
+        map.setOnTouchListener((v, event) -> {gpsActionButton.setImageResource(R.drawable.gps_not_fixed);
             return false;
         });
 
