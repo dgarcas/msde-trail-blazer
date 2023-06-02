@@ -19,7 +19,6 @@ import com.example.authenticate.signup.SignUpManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import es.upm.trailblazer.MapActivity;
 import es.upm.trailblazer.R;
 
 public class SignUpFragment extends Fragment {

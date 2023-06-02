@@ -46,4 +46,5 @@ dependencies {
     implementation 'org.osmdroid:osmdroid-mapsforge:6.1.10'
     implementation 'org.osmdroid:osmdroid-wms:6.1.10'
     implementation 'org.osmdroid:osmdroid-geopackage:6.1.10'
+    implementation group: 'com.google.android.gms', name: 'play-services-location', version: '21.0.1'
 }

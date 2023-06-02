@@ -12,7 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
-import es.upm.trailblazer.MapActivity;
+import es.upm.trailblazer.map.MapActivity;
 import es.upm.trailblazer.R;
 
 public class MainActivity extends AppCompatActivity {

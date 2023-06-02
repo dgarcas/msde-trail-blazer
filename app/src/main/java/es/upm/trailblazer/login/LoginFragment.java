@@ -16,11 +16,10 @@ import android.widget.ImageButton;
 
 import com.example.authenticate.login.GoogleLogin;
 import com.example.authenticate.login.UserLogin;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import es.upm.trailblazer.MapActivity;
+import es.upm.trailblazer.map.MapActivity;
 import es.upm.trailblazer.R;
 
 public class LoginFragment extends Fragment {
