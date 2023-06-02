@@ -17,6 +17,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -38,6 +39,7 @@ public class MapActivity extends AppCompatActivity {
     private MyLocationNewOverlay mLocationOverlay;
     private ScaleBarOverlay mScaleBarOverlay;
     private RotationGestureOverlay mRotationGestureOverlay;
+    private FloatingActionButton gpsActionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,23 @@ public class MapActivity extends AppCompatActivity {
         setContentView(R.layout.activity_map);
 
         checkLocationPermissions ();
+        map = findViewById(R.id.map_view);
         setMapConfigurations();
+        gpsActionButton = findViewById(R.id.floatingActionButton);
+
+        gpsActionButton.setOnClickListener(v -> {
+            if(mLocationOverlay.isFollowLocationEnabled()){
+                mLocationOverlay.disableFollowLocation();
+                gpsActionButton.setImageResource(R.drawable.gps_off);
+            } else {
+                mLocationOverlay.enableFollowLocation();
+                map.getController().setZoom(20);
+                gpsActionButton.setImageResource(R.drawable.gps_fixed);
+            }
+        });
+        map.setOnTouchListener((v, event) -> {gpsActionButton.setImageResource(R.drawable.gps_off);
+            return false;
+        });
 
     }
 
@@ -64,7 +82,7 @@ public class MapActivity extends AppCompatActivity {
     private void setMapConfigurations (){
         final DisplayMetrics dm = this.getResources().getDisplayMetrics();
 
-        map = findViewById(R.id.map_view);
+
         map.setTileSource(TileSourceFactory.MAPNIK);
         map.setMultiTouchControls(true);
         IMapController mapController = map.getController();
