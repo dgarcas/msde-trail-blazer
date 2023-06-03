@@ -1,49 +1,53 @@
 package es.upm.trailblazer.map;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.DisplayMetrics;
+import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.FrameLayout;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.osmdroid.api.IMapController;
-import org.osmdroid.config.Configuration;
-import org.osmdroid.mapsforge.BuildConfig;
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-import org.osmdroid.util.GeoPoint;
-import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.Marker;
-import org.osmdroid.views.overlay.ScaleBarOverlay;
-import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
-import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
-import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
+import java.util.function.BinaryOperator;
 
 import es.upm.trailblazer.R;
-import es.upm.trailblazer.TrackFragment;
 
 public class MapActivity extends AppCompatActivity {
 
-    Fragment trackFragment;
+    Fragment trackFragment, searchRouteFragment;
+    BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         trackFragment = new TrackFragment();
+        searchRouteFragment = new SeachRouteFragment();
 
-        getSupportFragmentManager().beginTransaction().add(R.id.loginContainer, trackFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.map_fragment, trackFragment).commit();
+
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            item.setChecked(true);
+            int track = bottomNavigationView.getMenu().getItem(0).getItemId();
+            int seach = bottomNavigationView.getMenu().getItem(1).getItemId();
+
+            if(itemId == track){
+                fragmentTransaction(R.id.map_fragment, trackFragment);
+            } else if (itemId == seach) {
+                fragmentTransaction(R.id.map_fragment, searchRouteFragment);
+            }
+            return false;
+        });
     }
+
+    private void fragmentTransaction(@IdRes int containerViewId, @NonNull Fragment fragment){
+        getSupportFragmentManager().beginTransaction().replace(containerViewId, fragment).addToBackStack(null).commit();
+    }
+
 }

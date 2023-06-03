@@ -1,4 +1,4 @@
-package es.upm.trailblazer;
+package es.upm.trailblazer.map;
 
 import android.Manifest;
 import android.content.Context;
@@ -26,6 +26,8 @@ import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
+
+import es.upm.trailblazer.R;
 
 public class TrackFragment extends Fragment {
 
