@@ -9,4 +9,9 @@
         android:enabled="true"
         android:icon="@drawable/search"
         android:title="@string/find"/>
+    <item
+        android:id="@+id/history"
+        android:enabled="true"
+        android:icon="@drawable/history"
+        android:title="@string/history"/>
 </menu>

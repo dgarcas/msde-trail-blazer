@@ -4,22 +4,16 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.FrameLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.function.BinaryOperator;
 
 import es.upm.trailblazer.R;
 
 public class MapActivity extends AppCompatActivity {
 
-    Fragment trackFragment, searchRouteFragment;
+    Fragment trackFragment, searchRouteFragment, historyFragment;
     BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +21,7 @@ public class MapActivity extends AppCompatActivity {
         setContentView(R.layout.activity_map);
         trackFragment = new TrackFragment();
         searchRouteFragment = new SeachRouteFragment();
+        historyFragment = new HistoryFragment();
 
         getSupportFragmentManager().beginTransaction().add(R.id.map_fragment, trackFragment).commit();
 
@@ -36,18 +31,21 @@ public class MapActivity extends AppCompatActivity {
             item.setChecked(true);
             int track = bottomNavigationView.getMenu().getItem(0).getItemId();
             int seach = bottomNavigationView.getMenu().getItem(1).getItemId();
+            int history = bottomNavigationView.getMenu().getItem(2).getItemId();
 
             if(itemId == track){
                 fragmentTransaction(R.id.map_fragment, trackFragment);
             } else if (itemId == seach) {
                 fragmentTransaction(R.id.map_fragment, searchRouteFragment);
+            } else if (itemId == history) {
+                fragmentTransaction(R.id.map_fragment, historyFragment);
             }
             return false;
         });
     }
 
     private void fragmentTransaction(@IdRes int containerViewId, @NonNull Fragment fragment){
-        getSupportFragmentManager().beginTransaction().replace(containerViewId, fragment).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(containerViewId, fragment).commit();
     }
 
 }
