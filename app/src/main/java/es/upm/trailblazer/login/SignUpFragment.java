@@ -1,5 +1,6 @@
 package es.upm.trailblazer.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -30,8 +31,10 @@ public class SignUpFragment extends Fragment {
     private EditText emailEditText;
     private EditText passwordEditText;
     private EditText repeatedPasswordEditText;
+    private Intent mapIntent;
 
-    public SignUpFragment() {
+    public SignUpFragment(Intent intent) {
+        this.mapIntent = intent;
     }
 
 
@@ -78,9 +81,14 @@ public class SignUpFragment extends Fragment {
         passwordEditText = getActivity().findViewById(R.id.loginPassword);
         repeatedPasswordEditText = getActivity().findViewById(R.id.loginPasswordRepeat);
 
-        googleLogin = new GoogleLogin(getActivity(), getString(R.string.default_web_client_id), this);
+        googleLogin = new GoogleLogin(getActivity(), getString(R.string.default_web_client_id),
+                this, mapIntent);
     }
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        googleLogin.manageGoogleLogin(requestCode, data);
+    }
     private void reload() {
     }
 }

@@ -23,10 +23,13 @@ public class GoogleLogin extends LoginManager implements Login {
     private GoogleSignInOptions gso;
     public static final int RC_SIGN_IN = 9001;
     private Fragment myFragment;
-    public GoogleLogin(Activity myActivity, String serverClientId, Fragment myFragment) {
+    private Intent intent;
+    public GoogleLogin(Activity myActivity, String serverClientId, Fragment myFragment, Intent intent) {
 
         super(myActivity);
+        this.intent = intent;
         this.myFragment = myFragment;
+        this.myActivity = myActivity;
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(serverClientId)
                 .requestEmail()
@@ -49,7 +52,6 @@ public class GoogleLogin extends LoginManager implements Login {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(myActivity.toString(), "signInWithCredential:failure", task.getException());
-                            updateUI(null);
                         }
                     }
                 });
@@ -62,7 +64,7 @@ public class GoogleLogin extends LoginManager implements Login {
 
     @Override
     public void updateUI(FirebaseUser user) {
-
+        myActivity.startActivity(intent);
     }
 
     public void manageGoogleLogin(int requestCode, Intent data) {

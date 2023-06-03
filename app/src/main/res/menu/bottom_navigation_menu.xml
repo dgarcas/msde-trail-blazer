@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/track_route"
+        android:enabled="true"
+        android:icon="@drawable/route"
+        android:title="@string/track"/>
+    <item
+        android:id="@+id/search_route"
+        android:enabled="true"
+        android:icon="@drawable/search"
+        android:title="@string/find"/>
+</menu>

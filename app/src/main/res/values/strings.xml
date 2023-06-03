@@ -8,4 +8,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="repeatPasswordHint">repeat password</string>
     <string name="facebook_app_id">TrailBlazer</string>
+    <string name="track">Track</string>
+    <string name="find">Find</string>
 </resources>

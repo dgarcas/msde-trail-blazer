@@ -8,9 +8,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
+import es.upm.trailblazer.map.MapActivity;
 import es.upm.trailblazer.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,16 +23,17 @@ public class MainActivity extends AppCompatActivity {
     private FragmentTransaction fragmentTransaction;
     private Fragment loginFragment;
     private Fragment signupFragment;
-
+    private Intent mapIntent;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mapIntent = new Intent(this, MapActivity.class);
         mAuth = FirebaseAuth.getInstance();
-        loginFragment = new LoginFragment();
-        signupFragment = new SignUpFragment();
+        loginFragment = new LoginFragment(mapIntent);
+        signupFragment = new SignUpFragment(mapIntent);
 
         getSupportFragmentManager().beginTransaction().add(R.id.loginContainer, loginFragment).commit();
 

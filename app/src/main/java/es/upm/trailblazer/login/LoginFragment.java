@@ -16,10 +16,10 @@ import android.widget.ImageButton;
 
 import com.example.authenticate.login.GoogleLogin;
 import com.example.authenticate.login.UserLogin;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import es.upm.trailblazer.map.MapActivity;
 import es.upm.trailblazer.R;
 
 public class LoginFragment extends Fragment {
@@ -29,10 +29,11 @@ public class LoginFragment extends Fragment {
     private ImageButton googleBnt;
     private GoogleLogin googleLogin;
     private UserLogin userLogin;
+    private Intent intent;
 
-    private GoogleSignInClient mGoogleSignInClient;
 
-    public LoginFragment() {
+    public LoginFragment(Intent intent) {
+        this.intent = intent;
     }
 
     @Override
@@ -62,6 +63,8 @@ public class LoginFragment extends Fragment {
 
         initializePrivateVariables();
 
+        Intent mapIntent = new Intent(getActivity(), MapActivity.class);
+
         loginBnt.setOnClickListener(v -> userLogin.clickLoginButton());
         googleBnt.setOnClickListener(v -> googleLogin.clickLoginButton());
     }
@@ -72,10 +75,9 @@ public class LoginFragment extends Fragment {
 
         EditText emailEditText = getActivity().findViewById(R.id.editTextTextEmailAddress);
         EditText passwordEditText = getActivity().findViewById(R.id.editTextTextPassword);
-        googleLogin = new GoogleLogin(getActivity(), getString(R.string.default_web_client_id), this);
-        userLogin = new UserLogin(getActivity(), emailEditText, passwordEditText);
+        googleLogin = new GoogleLogin(getActivity(), getString(R.string.default_web_client_id), this, intent);
+        userLogin = new UserLogin(getActivity(), emailEditText, passwordEditText, intent);
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

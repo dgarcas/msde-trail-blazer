@@ -1,5 +1,7 @@
 package com.example.authenticate.login;
 
+import android.content.Intent;
+
 import com.google.firebase.auth.FirebaseUser;
 
 public interface Login {
