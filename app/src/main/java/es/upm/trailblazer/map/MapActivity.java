@@ -26,8 +26,11 @@ public class MapActivity extends AppCompatActivity {
         searchRouteFragment = new SeachRouteFragment();
         historyFragment = new HistoryFragment();
 
-        getSupportFragmentManager().beginTransaction().add(R.id.map_fragment, trackFragment).commit();
+        commitFragmentTransaction(R.id.map_fragment, trackFragment);
+        setBottomNavigationViewBehavior();
+    }
 
+    private void setBottomNavigationViewBehavior(){
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(item -> makeFragmentTransaction(item));
     }
