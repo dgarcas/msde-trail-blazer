@@ -35,9 +35,11 @@ public class TrackFragment extends Fragment {
     private MyLocationNewOverlay mLocationOverlay;
     private ScaleBarOverlay mScaleBarOverlay;
     private RotationGestureOverlay mRotationGestureOverlay;
-    private FloatingActionButton gpsActionButton;
+    private FloatingActionButton gpsActionButton, recordButton;
+    private boolean recording;
 
     public TrackFragment() {
+        recording = false;
     }
 
 
@@ -60,13 +62,26 @@ public class TrackFragment extends Fragment {
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context));
         gpsActionButton = getActivity().findViewById(R.id.floatingActionButton);
         map = getActivity().findViewById(R.id.map_view);
+        recordButton = getActivity().findViewById(R.id.record_button);
 
         checkLocationPermissions();
         setMapConfigurations();
 
         gpsActionButton.setOnClickListener(v -> onClickListenerGPSButton());
+        recordButton.setOnClickListener(v -> onClickListenerRecordButton(v));
         map.setOnTouchListener((v, event) -> setOnTouchListener());
 
+    }
+
+    private void onClickListenerRecordButton(View v) {
+        FloatingActionButton actionButton = (FloatingActionButton) v;
+        if(recording){
+            recording = false;
+            actionButton.setImageResource(R.drawable.stop);
+        }else {
+            recording = true;
+            actionButton.setImageResource(R.drawable.record);
+        }
     }
 
     private boolean setOnTouchListener() {
