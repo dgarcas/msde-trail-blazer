@@ -16,7 +16,6 @@ public class MapActivity extends AppCompatActivity {
 
     Fragment trackFragment, searchRouteFragment, historyFragment;
     BottomNavigationView bottomNavigationView;
-    int itemTrackId, itemSearchId, itemHistoryId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
