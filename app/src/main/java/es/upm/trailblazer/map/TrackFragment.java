@@ -37,7 +37,8 @@ public class TrackFragment extends Fragment {
     private RotationGestureOverlay mRotationGestureOverlay;
     private FloatingActionButton gpsActionButton;
 
-    public TrackFragment() {}
+    public TrackFragment() {
+    }
 
 
     @Override
@@ -57,33 +58,37 @@ public class TrackFragment extends Fragment {
 
         Context context = getActivity().getApplicationContext();
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context));
-
-
-        checkLocationPermissions ();
-        map = getActivity().findViewById(R.id.map_view);
-        setMapConfigurations();
         gpsActionButton = getActivity().findViewById(R.id.floatingActionButton);
+        map = getActivity().findViewById(R.id.map_view);
 
-        gpsActionButton.setOnClickListener(v -> {
-            if(mLocationOverlay.isFollowLocationEnabled()){
-                mLocationOverlay.disableFollowLocation();
-                gpsActionButton.setImageResource(R.drawable.gps_not_fixed);
-            } else {
-                mLocationOverlay.enableFollowLocation();
-                map.getController().setZoom(20);
-                gpsActionButton.setImageResource(R.drawable.gps_fixed);
-            }
-        });
-        map.setOnTouchListener((v, event) -> {gpsActionButton.setImageResource(R.drawable.gps_not_fixed);
-            return false;
-        });
+        checkLocationPermissions();
+        setMapConfigurations();
 
+        gpsActionButton.setOnClickListener(v -> onClickListenerGPSButton());
+        map.setOnTouchListener((v, event) -> setOnTouchListener());
+
+    }
+
+    private boolean setOnTouchListener() {
+        gpsActionButton.setImageResource(R.drawable.gps_not_fixed);
+        return false;
+    }
+
+    private void onClickListenerGPSButton() {
+        if (mLocationOverlay.isFollowLocationEnabled()) {
+            mLocationOverlay.disableFollowLocation();
+            gpsActionButton.setImageResource(R.drawable.gps_not_fixed);
+        } else {
+            mLocationOverlay.enableFollowLocation();
+            map.getController().setZoom(20);
+            gpsActionButton.setImageResource(R.drawable.gps_fixed);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-       map.onResume();
+        map.onResume();
     }
 
     @Override
@@ -92,7 +97,7 @@ public class TrackFragment extends Fragment {
         map.onPause();
     }
 
-    private void setMapConfigurations (){
+    private void setMapConfigurations() {
         final DisplayMetrics dm = this.getResources().getDisplayMetrics();
 
 
@@ -121,7 +126,7 @@ public class TrackFragment extends Fragment {
     }
 
 
-    private void checkLocationPermissions (){
+    private void checkLocationPermissions() {
         if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
