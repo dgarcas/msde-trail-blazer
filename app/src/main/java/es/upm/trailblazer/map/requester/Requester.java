@@ -13,7 +13,7 @@ public class Requester {
 
     private static final String BASE_URL = "https://api.opentripmap.com/0.1/";
     private static final String LANGUAGE = "en";
-    private static final int RADIUS = 20000;
+    private static final int RADIUS = 50000;
     private static final String SOURCE_OBJECT = "osm";
     private static final String KINDS = "natural";
     private static final String ACCEPT = "application/json";
