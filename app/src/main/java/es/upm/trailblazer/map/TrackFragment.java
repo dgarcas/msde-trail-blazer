@@ -3,6 +3,7 @@ package es.upm.trailblazer.map;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,22 +13,34 @@ import androidx.fragment.app.Fragment;
 
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.FolderOverlay;
+import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
+import java.io.IOException;
+
 import es.upm.trailblazer.R;
+import es.upm.trailblazer.map.requester.Requester;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TrackFragment extends Fragment {
 
@@ -36,7 +49,9 @@ public class TrackFragment extends Fragment {
     private ScaleBarOverlay mScaleBarOverlay;
     private RotationGestureOverlay mRotationGestureOverlay;
     private FloatingActionButton gpsActionButton, recordButton;
+    private Callback callback;
     private boolean recording;
+    private Requester requester;
 
     public TrackFragment() {
         recording = false;
@@ -70,15 +85,61 @@ public class TrackFragment extends Fragment {
         gpsActionButton.setOnClickListener(v -> onClickListenerGPSButton());
         recordButton.setOnClickListener(v -> onClickListenerRecordButton(v));
         map.setOnTouchListener((v, event) -> setOnTouchListener());
+        setPointsOfInterest();
+    }
 
+    private void setPointsOfInterest() {
+        this.requester = new Requester();
+        setCallback();
+        try {
+            requester.getPlaces(40.42589154256929, -3.7125353659071387, callback);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setCallback() {
+        FolderOverlay poiMarkers = new FolderOverlay(getContext());
+        callback = new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+
+                JsonArray jsonArray = ((JsonObject) response.body())
+                        .getAsJsonArray("features");
+                Drawable poiIcon = getResources().getDrawable(R.drawable.location);
+
+                jsonArray.forEach(jsonElement -> {
+                    Marker poiMarker = new Marker(map);
+                    poiMarker.setTitle(String.valueOf(((JsonObject) jsonElement)
+                            .getAsJsonObject("properties").get("name").getAsString()));
+                    poiMarker.setPosition(
+                            new GeoPoint(
+                                    ((JsonObject) jsonElement).getAsJsonObject("geometry")
+                                            .getAsJsonArray("coordinates").get(1).getAsDouble(),
+                                    ((JsonObject) jsonElement).getAsJsonObject("geometry")
+                                            .getAsJsonArray("coordinates").get(0).getAsDouble()));
+                    poiMarker.setIcon(poiIcon);
+                    if (!poiMarker.getTitle().isEmpty()) {
+                        poiMarkers.add(poiMarker);
+                    }
+                });
+                map.getOverlays().add(poiMarkers);
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                System.out.println("callback!!!");
+                Log.e("callback", t.toString());
+            }
+        };
     }
 
     private void onClickListenerRecordButton(View v) {
         FloatingActionButton actionButton = (FloatingActionButton) v;
-        if(recording){
+        if (recording) {
             recording = false;
             actionButton.setImageResource(R.drawable.stop);
-        }else {
+        } else {
             recording = true;
             actionButton.setImageResource(R.drawable.record);
         }
