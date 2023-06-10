@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,13 @@ import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
+import java.io.IOException;
+
 import es.upm.trailblazer.R;
+import es.upm.trailblazer.map.requester.Requester;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TrackFragment extends Fragment {
 
@@ -36,6 +43,7 @@ public class TrackFragment extends Fragment {
     private ScaleBarOverlay mScaleBarOverlay;
     private RotationGestureOverlay mRotationGestureOverlay;
     private FloatingActionButton gpsActionButton, recordButton;
+    private Callback callback;
     private boolean recording;
 
     public TrackFragment() {
@@ -71,6 +79,25 @@ public class TrackFragment extends Fragment {
         recordButton.setOnClickListener(v -> onClickListenerRecordButton(v));
         map.setOnTouchListener((v, event) -> setOnTouchListener());
 
+        callback = new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                System.out.println("callback!!!");
+                Log.i("callback", "callback!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                System.out.println("callback!!!");
+                Log.e("callback", t.toString());
+            }
+        };
+        Requester requester = new Requester();
+        try {
+            requester.getPlaces(40.42589154256929, -3.7125353659071387, callback);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void onClickListenerRecordButton(View v) {
