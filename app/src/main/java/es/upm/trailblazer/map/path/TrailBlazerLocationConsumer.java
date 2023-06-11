@@ -22,16 +22,6 @@ public class TrailBlazerLocationConsumer extends MyLocationNewOverlay {
     private RoadManager roadManager;
     Polyline roadOverlay;
 
-    public TrailBlazerLocationConsumer(MapView mapView, Context context) {
-
-        super(mapView);
-        pathTracker = new PathTracker(context);
-        this.recording = false;
-        this.waypoints = new ArrayList<GeoPoint>();
-        this.roadOverlay = new Polyline(this.mMapView);
-        roadManager = new OSRMRoadManager(context, "TrailBlazerLocationConsumer");
-    }
-
     public TrailBlazerLocationConsumer(IMyLocationProvider myLocationProvider, MapView mapView,
                                        Context context) {
         super(myLocationProvider, mapView);
