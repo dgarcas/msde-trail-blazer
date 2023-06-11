@@ -142,6 +142,7 @@ public class TrackFragment extends Fragment {
         if (mLocationOverlay.getRecording()) {
             mLocationOverlay.setRecording(false);
             actionButton.setImageResource(R.drawable.record);
+            mLocationOverlay.removeRouteRecorded();
         } else {
             mLocationOverlay.setRecording(true);
             actionButton.setImageResource(R.drawable.stop);

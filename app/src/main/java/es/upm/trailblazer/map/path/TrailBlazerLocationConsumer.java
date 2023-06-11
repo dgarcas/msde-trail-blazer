@@ -19,7 +19,8 @@ public class TrailBlazerLocationConsumer extends MyLocationNewOverlay {
     private PathTracker pathTracker;
     private Boolean recording;
     private ArrayList<GeoPoint> waypoints;
-    private RoadManager roadManager ;
+    private RoadManager roadManager;
+    Polyline roadOverlay;
 
     public TrailBlazerLocationConsumer(MapView mapView, Context context) {
 
@@ -27,6 +28,7 @@ public class TrailBlazerLocationConsumer extends MyLocationNewOverlay {
         pathTracker = new PathTracker(context);
         this.recording = false;
         this.waypoints = new ArrayList<GeoPoint>();
+        this.roadOverlay = new Polyline(this.mMapView);
         roadManager = new OSRMRoadManager(context, "TrailBlazerLocationConsumer");
     }
 
@@ -36,6 +38,7 @@ public class TrailBlazerLocationConsumer extends MyLocationNewOverlay {
         pathTracker = new PathTracker(context);
         this.recording = false;
         this.waypoints = new ArrayList<GeoPoint>();
+        this.roadOverlay = new Polyline(this.mMapView);
         roadManager = new OSRMRoadManager(context, "TrailBlazerLocationConsumer");
     }
 
@@ -47,14 +50,23 @@ public class TrailBlazerLocationConsumer extends MyLocationNewOverlay {
         this.recording = recording;
     }
 
+    public void removeRouteRecorded(){
+        deletePolylineOverlay();
+        waypoints =  new ArrayList<GeoPoint>();
+    }
+    public void deletePolylineOverlay(){
+        if(mMapView.getOverlays().contains(roadOverlay)){
+            mMapView.getOverlays().remove(roadOverlay);
+        }
+    }
     @Override
     public void onLocationChanged(Location location, IMyLocationProvider source) {
         super.onLocationChanged(location, source);
 
         if (recording) {
             waypoints.add(new GeoPoint(location.getLatitude(), location.getLongitude()));
-            if(waypoints.size()>1) {
-                Polyline roadOverlay = new Polyline(this.mMapView);
+            if (waypoints.size() > 1) {
+                deletePolylineOverlay();
                 roadOverlay.setPoints(waypoints);
                 this.mMapView.getOverlays().add(roadOverlay);
                 this.mMapView.invalidate();
