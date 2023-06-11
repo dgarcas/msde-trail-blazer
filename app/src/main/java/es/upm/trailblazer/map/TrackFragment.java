@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -29,14 +30,19 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.FolderOverlay;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
+import org.osmdroid.views.overlay.mylocation.IMyLocationConsumer;
+import org.osmdroid.views.overlay.mylocation.IMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.io.IOException;
 
 import es.upm.trailblazer.R;
+import es.upm.trailblazer.map.path.PathTracker;
+import es.upm.trailblazer.map.path.TrailBlazerLocationConsumer;
 import es.upm.trailblazer.map.requester.Requester;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,18 +51,15 @@ import retrofit2.Response;
 public class TrackFragment extends Fragment {
 
     private MapView map;
-    private MyLocationNewOverlay mLocationOverlay;
+    private TrailBlazerLocationConsumer mLocationOverlay;
     private ScaleBarOverlay mScaleBarOverlay;
     private RotationGestureOverlay mRotationGestureOverlay;
     private FloatingActionButton gpsActionButton, recordButton;
     private Callback callback;
-    private boolean recording;
     private Requester requester;
+    private GpsMyLocationProvider gpsMyLocationProvider;
 
-    public TrackFragment() {
-        recording = false;
-    }
-
+    public TrackFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -136,12 +139,13 @@ public class TrackFragment extends Fragment {
 
     private void onClickListenerRecordButton(View v) {
         FloatingActionButton actionButton = (FloatingActionButton) v;
-        if (recording) {
-            recording = false;
-            actionButton.setImageResource(R.drawable.stop);
-        } else {
-            recording = true;
+        if (mLocationOverlay.getRecording()) {
+            mLocationOverlay.setRecording(false);
             actionButton.setImageResource(R.drawable.record);
+            mLocationOverlay.removeRouteRecorded();
+        } else {
+            mLocationOverlay.setRecording(true);
+            actionButton.setImageResource(R.drawable.stop);
         }
     }
 
@@ -182,7 +186,8 @@ public class TrackFragment extends Fragment {
         IMapController mapController = map.getController();
         mapController.setZoom(20);
 
-        mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getActivity()), map);
+        gpsMyLocationProvider = new GpsMyLocationProvider(getActivity());
+        mLocationOverlay = new TrailBlazerLocationConsumer(gpsMyLocationProvider, map, getContext());
         mLocationOverlay.enableMyLocation();
         mLocationOverlay.enableFollowLocation();
 
@@ -200,7 +205,6 @@ public class TrackFragment extends Fragment {
         mRotationGestureOverlay.setEnabled(true);
         map.getOverlays().add(this.mRotationGestureOverlay);
     }
-
 
     private void checkLocationPermissions() {
         if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
