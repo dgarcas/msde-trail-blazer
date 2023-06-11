@@ -14,7 +14,7 @@ import es.upm.trailblazer.R;
 
 public class MapActivity extends AppCompatActivity {
 
-    Fragment trackFragment, searchRouteFragment, historyFragment;
+    Fragment trackFragment, historyFragment;
     BottomNavigationView bottomNavigationView;
 
     @Override
@@ -22,7 +22,6 @@ public class MapActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         trackFragment = new TrackFragment();
-        searchRouteFragment = new SeachRouteFragment();
         historyFragment = new HistoryFragment();
 
         commitFragmentTransaction(R.id.map_fragment, trackFragment);
@@ -37,8 +36,7 @@ public class MapActivity extends AppCompatActivity {
     private boolean makeFragmentTransaction(MenuItem item) {
         int itemId = item.getItemId();
         int track = bottomNavigationView.getMenu().getItem(0).getItemId();
-        int search = bottomNavigationView.getMenu().getItem(1).getItemId();
-        int history = bottomNavigationView.getMenu().getItem(2).getItemId();
+        int history = bottomNavigationView.getMenu().getItem(1).getItemId();
         Fragment fragmentToTransit = null;
         Boolean result = false;
 
@@ -46,8 +44,6 @@ public class MapActivity extends AppCompatActivity {
 
         if (itemId == track) {
             fragmentToTransit = trackFragment;
-        } else if (itemId == search) {
-            fragmentToTransit = searchRouteFragment;
         } else if (itemId == history) {
             fragmentToTransit = historyFragment;
         }
