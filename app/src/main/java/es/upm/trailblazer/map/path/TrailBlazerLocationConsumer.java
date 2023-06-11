@@ -18,18 +18,12 @@ public class TrailBlazerLocationConsumer extends MyLocationNewOverlay {
 
     private PathTracker pathTracker;
     private Boolean recording;
-    private ArrayList<GeoPoint> waypoints;
-    private RoadManager roadManager;
-    Polyline roadOverlay;
 
     public TrailBlazerLocationConsumer(IMyLocationProvider myLocationProvider, MapView mapView,
                                        Context context) {
         super(myLocationProvider, mapView);
-        pathTracker = new PathTracker(context);
-        this.recording = false;
-        this.waypoints = new ArrayList<GeoPoint>();
-        this.roadOverlay = new Polyline(this.mMapView);
-        roadManager = new OSRMRoadManager(context, "TrailBlazerLocationConsumer");
+        pathTracker = new PathTracker(context, mMapView);
+        recording = false;
     }
 
     public Boolean getRecording() {
@@ -41,28 +35,11 @@ public class TrailBlazerLocationConsumer extends MyLocationNewOverlay {
     }
 
     public void removeRouteRecorded(){
-        deletePolylineOverlay();
-        waypoints =  new ArrayList<GeoPoint>();
-    }
-    public void deletePolylineOverlay(){
-        if(mMapView.getOverlays().contains(roadOverlay)){
-            mMapView.getOverlays().remove(roadOverlay);
-        }
+        pathTracker.removeRouteRecorded();
     }
     @Override
     public void onLocationChanged(Location location, IMyLocationProvider source) {
         super.onLocationChanged(location, source);
-
-        if (recording) {
-            waypoints.add(new GeoPoint(location.getLatitude(), location.getLongitude()));
-            if (waypoints.size() > 1) {
-                deletePolylineOverlay();
-                roadOverlay.setPoints(waypoints);
-                this.mMapView.getOverlays().add(roadOverlay);
-                this.mMapView.invalidate();
-            }
-        } else {
-            this.mMapView.getOverlays();
-        }
+        pathTracker.onLocationChanged(location, recording);
     }
 }
