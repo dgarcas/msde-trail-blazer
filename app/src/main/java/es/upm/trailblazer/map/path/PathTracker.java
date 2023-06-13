@@ -48,4 +48,8 @@ public class PathTracker {
         GeoPoint point = new GeoPoint(latitude, longitude);
         waypoints.add(point);
     }
+
+    public ArrayList<GeoPoint> getRouteDone() {
+        return waypoints;
+    }
 }

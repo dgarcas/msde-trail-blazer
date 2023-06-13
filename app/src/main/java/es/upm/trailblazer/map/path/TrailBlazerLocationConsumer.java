@@ -34,9 +34,14 @@ public class TrailBlazerLocationConsumer extends MyLocationNewOverlay {
         this.recording = recording;
     }
 
-    public void removeRouteRecorded(){
+    public void removeRouteRecorded() {
         pathTracker.removeRouteRecorded();
     }
+
+    public ArrayList<GeoPoint> getRouteDone() {
+        return pathTracker.getRouteDone();
+    }
+
     @Override
     public void onLocationChanged(Location location, IMyLocationProvider source) {
         super.onLocationChanged(location, source);

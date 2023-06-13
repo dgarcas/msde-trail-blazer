@@ -2,6 +2,7 @@ package es.upm.trailblazer.map;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -19,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -39,8 +41,11 @@ import org.osmdroid.views.overlay.mylocation.IMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
 
 import es.upm.trailblazer.R;
+import es.upm.trailblazer.RouteResumeActivity;
 import es.upm.trailblazer.map.path.PathTracker;
 import es.upm.trailblazer.map.path.TrailBlazerLocationConsumer;
 import es.upm.trailblazer.map.requester.Requester;
@@ -142,7 +147,13 @@ public class TrackFragment extends Fragment {
         if (mLocationOverlay.getRecording()) {
             mLocationOverlay.setRecording(false);
             actionButton.setImageResource(R.drawable.record);
+            ArrayList<GeoPoint> points = mLocationOverlay.getRouteDone();
             mLocationOverlay.removeRouteRecorded();
+
+            Intent intent = new Intent(getActivity(), RouteResumeActivity.class);
+            intent.putExtra("polyline", points);
+            startActivity(intent);
+
         } else {
             mLocationOverlay.setRecording(true);
             actionButton.setImageResource(R.drawable.stop);
