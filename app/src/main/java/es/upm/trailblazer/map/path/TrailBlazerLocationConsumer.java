@@ -13,6 +13,7 @@ import org.osmdroid.views.overlay.mylocation.IMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TrailBlazerLocationConsumer extends MyLocationNewOverlay {
 
@@ -40,6 +41,9 @@ public class TrailBlazerLocationConsumer extends MyLocationNewOverlay {
 
     public ArrayList<GeoPoint> getRouteDone() {
         return pathTracker.getRouteDone();
+    }
+    public List<Float> getSpeedRegistry(){
+        return pathTracker.getSpeedRegistry();
     }
 
     @Override

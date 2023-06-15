@@ -43,10 +43,12 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import es.upm.trailblazer.R;
 import es.upm.trailblazer.RouteResumeActivity;
 import es.upm.trailblazer.map.path.PathTracker;
+import es.upm.trailblazer.map.path.Route;
 import es.upm.trailblazer.map.path.TrailBlazerLocationConsumer;
 import es.upm.trailblazer.map.requester.Requester;
 import retrofit2.Call;
@@ -148,10 +150,12 @@ public class TrackFragment extends Fragment {
             mLocationOverlay.setRecording(false);
             actionButton.setImageResource(R.drawable.record);
             ArrayList<GeoPoint> points = mLocationOverlay.getRouteDone();
+            List<Float > speedRegistry = mLocationOverlay.getSpeedRegistry();
             mLocationOverlay.removeRouteRecorded();
 
+            Route route = new Route(points, speedRegistry);
             Intent intent = new Intent(getActivity(), RouteResumeActivity.class);
-            intent.putExtra("polyline", points);
+            intent.putExtra("route", route);
             startActivity(intent);
 
         } else {

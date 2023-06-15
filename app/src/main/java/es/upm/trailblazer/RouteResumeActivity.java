@@ -22,11 +22,13 @@ import org.osmdroid.views.overlay.Polyline;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.upm.trailblazer.map.path.Route;
+
 public class RouteResumeActivity extends AppCompatActivity {
 
     MapView mapView;
     Polyline polyline;
-    TextView date, distance;
+    TextView date, distance, speed;
 
 
     @Override
@@ -37,19 +39,29 @@ public class RouteResumeActivity extends AppCompatActivity {
         mapView = findViewById(R.id.map_view_resume);
         date = findViewById(R.id.data_value);
         distance = findViewById(R.id.distance_value);
+        speed = findViewById(R.id.speed_value);
 
         Intent intent = getIntent();
-        ArrayList<GeoPoint> points = (ArrayList<GeoPoint>) intent.getSerializableExtra("polyline");
+        Route route = (Route) intent.getSerializableExtra("route");
 
         Polyline polyline = new Polyline(mapView);
-        polyline.setPoints(points);
+        polyline.setPoints(route.getPoints());
         mapView.getOverlays().add(polyline);
         mapView.invalidate();
 
         this.polyline = polyline;
         centerMap(polyline.getPoints());
         distance.setText(String.valueOf(polyline.getDistance()));
+        speed.setText(String.valueOf(getMedia(route.getSpeedKmH())));
 
+    }
+
+    private float getMedia(List<Float> speedList){
+        float suma = 0;
+        for (float valor : speedList) {
+            suma += valor;
+        }
+        return suma / speedList.size();
     }
     private void centerMap(List<GeoPoint> points) {
         double maxLatitude = -90.0;
