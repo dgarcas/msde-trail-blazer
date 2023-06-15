@@ -13,6 +13,7 @@ import org.osmdroid.views.overlay.mylocation.IMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TrailBlazerLocationConsumer extends MyLocationNewOverlay {
 
@@ -34,9 +35,17 @@ public class TrailBlazerLocationConsumer extends MyLocationNewOverlay {
         this.recording = recording;
     }
 
-    public void removeRouteRecorded(){
+    public void removeRouteRecorded() {
         pathTracker.removeRouteRecorded();
     }
+
+    public ArrayList<GeoPoint> getRouteDone() {
+        return pathTracker.getRouteDone();
+    }
+    public List<Float> getSpeedRegistry(){
+        return pathTracker.getSpeedRegistry();
+    }
+
     @Override
     public void onLocationChanged(Location location, IMyLocationProvider source) {
         super.onLocationChanged(location, source);

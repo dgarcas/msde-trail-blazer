@@ -2,6 +2,7 @@ package es.upm.trailblazer.map;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -19,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -39,9 +41,14 @@ import org.osmdroid.views.overlay.mylocation.IMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import es.upm.trailblazer.R;
+import es.upm.trailblazer.RouteResumeActivity;
 import es.upm.trailblazer.map.path.PathTracker;
+import es.upm.trailblazer.map.path.Route;
 import es.upm.trailblazer.map.path.TrailBlazerLocationConsumer;
 import es.upm.trailblazer.map.requester.Requester;
 import retrofit2.Call;
@@ -142,7 +149,15 @@ public class TrackFragment extends Fragment {
         if (mLocationOverlay.getRecording()) {
             mLocationOverlay.setRecording(false);
             actionButton.setImageResource(R.drawable.record);
+            ArrayList<GeoPoint> points = mLocationOverlay.getRouteDone();
+            List<Float > speedRegistry = mLocationOverlay.getSpeedRegistry();
             mLocationOverlay.removeRouteRecorded();
+
+            Route route = new Route(points, speedRegistry);
+            Intent intent = new Intent(getActivity(), RouteResumeActivity.class);
+            intent.putExtra("route", route);
+            startActivity(intent);
+
         } else {
             mLocationOverlay.setRecording(true);
             actionButton.setImageResource(R.drawable.stop);

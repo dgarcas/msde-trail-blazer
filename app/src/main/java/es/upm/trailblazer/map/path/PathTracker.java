@@ -8,12 +8,14 @@ import android.content.Context;
 import android.location.Location;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PathTracker {
 
     private ArrayList<GeoPoint> waypoints;
     private Polyline roadOverlay;
     private MapView mapView;
+    private List<Float> speedRegistry;
 
 
     public PathTracker(Context context, MapView mapView) {
@@ -21,6 +23,7 @@ public class PathTracker {
         this.mapView = mapView;
         this.roadOverlay = new Polyline(mapView);
         this.waypoints = new ArrayList<GeoPoint>();
+        this.speedRegistry = new ArrayList<Float>();
     }
 
     public void onLocationChanged(Location location, Boolean recording) {
@@ -30,7 +33,13 @@ public class PathTracker {
             roadOverlay.setPoints(waypoints);
             this.mapView.getOverlays().add(roadOverlay);
             this.mapView.invalidate();
+            float speedInMetersPerSecond = location.getSpeed();
+            speedRegistry.add(speedInMetersPerSecond * 3.6f);
         }
+    }
+
+    public List<Float> getSpeedRegistry() {
+        return speedRegistry;
     }
 
     public void removeRouteRecorded() {
@@ -47,5 +56,9 @@ public class PathTracker {
     private void addPoint(double latitude, double longitude) {
         GeoPoint point = new GeoPoint(latitude, longitude);
         waypoints.add(point);
+    }
+
+    public ArrayList<GeoPoint> getRouteDone() {
+        return waypoints;
     }
 }
